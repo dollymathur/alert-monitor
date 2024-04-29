@@ -1,15 +1,24 @@
 package com.example.alertmonitor;
 
+import com.example.alertmonitor.model.*;
+import com.example.alertmonitor.service.MonitoringService;
+
+import java.util.List;
+
 public class AlertMonitorApplication {
 
     public static void main(String[] args) {
 
-        // Spinning up anew thread.
-        Thread t1 = new Thread(new RunnableImpl());
-        t1.start();
+        MonitoringService monitoringService = new MonitoringService();
 
-        /*Thread t2 = new Thread(new RunnableImpl());
-        t2.start();*/
+        // test alerts to fire
+        List<Alert> alerts = List.of(
+                new Alert("X", "PAYMENT_EXCEPTION", new AlertConfig(ConfigType.TUMBLING_WINDOW, 3, 10),
+                        List.of(new DispatchStrategy(DispatchType.CONSOLE, "issue in payment"),
+                                new DispatchStrategy(DispatchType.EMAIL, "payment exception threshold breached"))),
+                new Alert("Y", "USER_SERVICE_EXCEPTION", new AlertConfig(ConfigType.SIMPLE_COUNT, 3, 0),
+                        List.of(new DispatchStrategy(DispatchType.CONSOLE, "issue in user service"))));
+        monitoringService.fireAlert(alerts);
 
     }
 }

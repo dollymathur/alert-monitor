@@ -9,6 +9,10 @@ import java.util.List;
 public class MonitoringService {
 
     public void fireAlert(List<Alert> alerts) {
+        if (alerts == null || alerts.isEmpty()) {
+            System.out.println("No alerts to fire");
+            return;
+        }
         for (Alert alert : alerts) {
             System.out.println("Client " + alert.getClient() + " firing event " + alert.getEventType());
             AlertConfigurationService alertConfigurationService = ConfigurationServiceFactory.getConfigurationService(alert);

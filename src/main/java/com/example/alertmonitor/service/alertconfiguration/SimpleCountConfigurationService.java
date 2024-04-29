@@ -17,6 +17,12 @@ public class SimpleCountConfigurationService implements AlertConfigurationServic
 
     @Override
     public void fireAlert() {
+        if (alertConfig.getCount() <= 0) {
+            System.out.println("Count should be greater than 0");
+        }
+        if (dispatcherServices.isEmpty()) {
+            System.out.println("Dispatcher services should not be empty");
+        }
         for (int i = 1; i <= alertConfig.getCount(); i++) {
             // for each type of dispatcher service, dispatch the alert
             dispatcherServices.forEach(DispatcherService::dispatchAlert);
